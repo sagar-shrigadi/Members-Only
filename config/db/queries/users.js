@@ -22,3 +22,13 @@ export const insertUser = async (firstname, lastname, username, password) => {
     [firstname, lastname, username, hashedPassword],
   );
 };
+
+export const updateUserStatus = async (id) => {
+  await pool.query(
+    `
+    UPDATE users
+    SET membership_status = 'member'
+    WHERE id = $1`,
+    [id],
+  );
+};

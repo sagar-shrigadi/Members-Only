@@ -1,0 +1,12 @@
+<%- include('./partials/header.ejs') %>
+<main>
+    <h1>Upgrade Membership status</h1>
+    <%- include('./partials/error.ejs') %>
+    <h2>Become a Member</h2>
+    <form action="upgrade-status" method="post">
+        <label for="passcode">Passcode: </label>
+        <input type="password" name="passcode" id="passcode" required>
+        <button type="submit">Submit</button>
+    </form>
+</main>
+<%- include('./partials/header.ejs') %>
