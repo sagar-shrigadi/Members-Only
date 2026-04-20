@@ -1,0 +1,9 @@
+<article>
+    <% if (locals.errors) { %> 
+        <ul>
+            <% errors.map(err => { %>
+                <li><%= err.msg %></li>
+            <% }) %>
+        </ul>
+    <% } %>
+</article>

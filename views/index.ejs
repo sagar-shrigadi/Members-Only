@@ -1,0 +1,43 @@
+<%- include('./partials/header.ejs') %>
+<main>
+    <section>
+        <% if (locals.currentUser) { %>
+            <h1>Welcome, <%= currentUser.firstname %></h1>
+            <a href="/logout">Logout</a>
+        <% } else { %>
+            <h1>Please Register to Continue!</h1>
+            <%- include('./partials/error.ejs') %>
+            <article>
+                <form action="register" method="post">
+                    <div class="name">
+                        <div>
+                            <label for="firstname">First Name: </label>
+                            <input type="text" name="firstname" id="firstname" required>
+                        </div>
+                        <div>
+                            <label for="lastname">Last Name: </label>
+                            <input type="text" name="lastname" id="lastname" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="username">Username: </label>
+                        <input type="email" name="username" id="username" placeholder="test@example.com" required>
+                    </div>
+                    <div>
+                        <label for="password">Password: </label>
+                        <input type="password" name="password" id="password" required>
+                    </div>
+                    <div>
+                        <label for="passwordConfirmation">Confirm Password: </label>
+                        <input type="password" name="passwordConfirmation" id="passwordConfirmation" required>
+                    </div>
+                    <button type="submit">Register</button>
+                </form>
+                <p>Already have an account?</p>
+                <a href="/login">Login</a>
+            </article>
+        <% } %>
+    </section>
+
+</main>
+<%- include('./partials/footer.ejs') %>
