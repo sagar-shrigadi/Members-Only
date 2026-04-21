@@ -19,3 +19,10 @@ export const getAllMsgByUser = async (id) => {
   );
   return rows;
 };
+
+export const getAllMsg = async () => {
+  const { rows } = await pool.query(`
+    SELECT users.id, firstname, lastname, membership_status AS status, messages.id, title, message_content, created_at, messages.user_id 
+    FROM users INNER JOIN messages ON users.id = messages.user_id`);
+  return rows;
+};

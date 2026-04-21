@@ -4,6 +4,9 @@
         <div>
             <h1>User: <%= currentUser.firstname %></h1>
             <p>Membership Status: <%= currentUser.membership_status %></p>
+            <% if(currentUser.membership_status === 'user') { %>
+              <a href="/upgrade-status">Become a Member</a>
+            <% } %>
         </div>
         <% if (locals.userMsg) { %>
             <div>

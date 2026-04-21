@@ -14,9 +14,11 @@ export const postUpgradeForm = [
     const { passcode } = matchedData(req);
     if (passcode === process.env.UPGRADE_STATUS_PASS) {
       await updateUserStatus(req.user.id);
+      res.redirect("/");
     } else {
-      res.redirect("/upgrade-status", { errors: "Incorrect Passcode!" });
+      res
+        .status(400)
+        .render("upgradeForm", { errors: [{ msg: "Incorrect passcode!" }] });
     }
-    res.redirect("/");
   },
 ];

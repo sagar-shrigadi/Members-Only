@@ -1,21 +1,24 @@
 import { body, matchedData, validationResult } from "express-validator";
 import passport from "passport";
 import { getUserByUsername, insertUser } from "../config/db/queries/users.js";
+import { getAllMsg } from "../config/db/queries/notes.js";
 
-export const getIndex = (req, res) => {
-  res.render("index");
+export const getIndex = async (req, res) => {
+  const allMsg = await getAllMsg();
+  // console.log(typeof allMsg[0].id);
+  res.render("index", { allMsg });
 };
 
 // validation errors
 export const emptyMsgErr = `must not be empty!`;
 
 // Validates names allowing alphanumeric characters separated by single spaces, hyphens, or apostrophes.
-const nameRegex = /^[a-zA-Z](?:[\s-'][a-zA-Z0-9]+)*$/;
+const nameRegex = /^[a-zA-Z0-9._-]+$/;
 const nameRegexErr = `must start with a letter and can only include letters, numbers, spaces, hyphens, or apostrophes.`;
 const nameLengthErr = `must have minimum length of 2`;
 
 // Validates a standard email address format with a name, @ symbol, domain, and 2+ character TLD.
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const emailRegexErr = "a valid email address (e.g., name@example.com).";
 
 const loginFormValidation = [
