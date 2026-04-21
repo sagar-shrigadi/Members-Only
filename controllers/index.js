@@ -14,7 +14,7 @@ export const emptyMsgErr = `must not be empty!`;
 
 // Validates names allowing alphanumeric characters separated by single spaces, hyphens, or apostrophes.
 const nameRegex = /^[a-zA-Z0-9._-]+$/;
-const nameRegexErr = `must start with a letter and can only include letters, numbers, spaces, hyphens, or apostrophes.`;
+const nameRegexErr = `must start with a letter and can only include letters, numbers, hyphens, or apostrophes.`;
 const nameLengthErr = `must have minimum length of 2`;
 
 // Validates a standard email address format with a name, @ symbol, domain, and 2+ character TLD.
@@ -68,9 +68,9 @@ const registerFormValidation = [
     .withMessage(`Username Should ${emailRegexErr}`)
     .custom(async (value, { req }) => {
       const user = await getUserByUsername(req.body.username);
-      console.log(
-        `Custom email validation to check if user with given email already exists, user: ${user}`,
-      );
+      // console.log(
+      //   `Custom email validation to check if user with given email already exists, user: ${user}`,
+      // );
       if (user) {
         throw new Error(`Email already in use`);
       }
@@ -90,13 +90,15 @@ export const registerUser = [
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log(errors);
+      // console.log(errors);
       return res.status(400).render("index", {
         errors: errors.array(),
       });
     }
     const { firstname, lastname, username, password } = matchedData(req);
-    await insertUser(firstname, lastname, username, password);
+    const { admin } = req.body;
+    // console.log(Boolean(admin));
+    await insertUser(firstname, lastname, username, password, Boolean(admin));
     res.redirect("/login");
   },
 ];

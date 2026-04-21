@@ -20,6 +20,10 @@
                         <p><%= msg.created_at.toDateString() %></p>
                     </div>
                     <p><%= msg.message_content %></p>
+                    <%# allow users to be able to delete their own messages %>
+                    <form action="/message/<%= msg.mid %>/delete" method="post">
+                        <button type="submit">Delete</button>
+                    </form>
                 </article>
             <% }) %>
         <% } %>

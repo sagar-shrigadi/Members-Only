@@ -13,13 +13,19 @@ export const getUserById = async (id) => {
   return rows[0];
 };
 
-export const insertUser = async (firstname, lastname, username, password) => {
+export const insertUser = async (
+  firstname,
+  lastname,
+  username,
+  password,
+  admin,
+) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   await pool.query(
     `
-    INSERT INTO users (firstname, lastname, username, password)
-    VALUES ($1, $2, $3, $4)`,
-    [firstname, lastname, username, hashedPassword],
+    INSERT INTO users (firstname, lastname, username, password, admin)
+    VALUES ($1, $2, $3, $4, $5)`,
+    [firstname, lastname, username, hashedPassword, admin],
   );
 };
 

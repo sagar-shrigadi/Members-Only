@@ -16,7 +16,10 @@ CREATE TABLE IF NOT EXISTS messages (
     message_content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id INTEGER NOT NULL REFERENCES users(id)
-);`;
+);
+
+ALTER TABLE users ADD COLUMN admin BOOLEAN DEFAULT FALSE;
+`;
 
 async function main() {
   console.log("seeding...");

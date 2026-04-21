@@ -12,7 +12,7 @@ export const insertMessage = async (title, content, date, userId) => {
 export const getAllMsgByUser = async (id) => {
   const { rows } = await pool.query(
     `
-    SELECT users.id, firstname, lastname, membership_status AS status, messages.id, title, message_content, created_at 
+    SELECT users.id AS uid, firstname, lastname, membership_status AS status, admin, messages.id AS mid, title, message_content, created_at, messages.user_id 
     FROM users INNER JOIN messages ON users.id = messages.user_id
     WHERE users.id = $1`,
     [id],
@@ -22,7 +22,17 @@ export const getAllMsgByUser = async (id) => {
 
 export const getAllMsg = async () => {
   const { rows } = await pool.query(`
-    SELECT users.id, firstname, lastname, membership_status AS status, messages.id, title, message_content, created_at, messages.user_id 
+    SELECT users.id AS uid, firstname, lastname, membership_status AS status, admin, messages.id AS mid, title, message_content, created_at, messages.user_id 
     FROM users INNER JOIN messages ON users.id = messages.user_id`);
   return rows;
+};
+
+export const deleteSelectedMsg = async (id) => {
+  await pool.query(
+    `
+    DELETE FROM messages
+    WHERE id = $1
+    `,
+    [id],
+  );
 };
