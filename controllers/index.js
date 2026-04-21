@@ -126,3 +126,6 @@ export const getLogout = (req, res, next) => {
     res.redirect("/login");
   });
 };
+export const getRegister = (req, res) => {
+  res.render("registerForm");
+};

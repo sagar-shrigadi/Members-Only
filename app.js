@@ -50,11 +50,11 @@ app.use((req, res, next) => {
   next();
 });
 // 2 console-ing session and user object from req for better debugging
-app.use((req, res, next) => {
-  console.log(req.session);
-  console.log(req.user);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(req.session);
+//   console.log(req.user);
+//   next();
+// });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

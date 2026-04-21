@@ -2,7 +2,7 @@
 <main>
     <section>
         <% if (locals.currentUser) { %>
-            <div>
+            <article>
                 <div>
                     <% if (currentUser.admin) { %>
                         <h1>Welcome, <%= currentUser.firstname %> (Admin)</h1>
@@ -17,7 +17,12 @@
                     <p>Become a member to see the author and posted date of messages created by other users...</p>
                     <a href="/upgrade-status">Become a Member</a><br />
                 <% } %>
-            </div>
+            </article>
+        <% } %>
+        <% if (!locals.currentUser) { %>
+            <a href="/register">Register</a><span style="margin-left: .25em;">To freely chat with like minded users!</span>
+        <% } %>
+        <section>
             <div>
                 <h2>Messages</h2>
                 <a href="/message/new">Create New Message</a><br/>
@@ -27,16 +32,16 @@
                     <article>
                         <div>
                             <h3><%= msg.title %></h3>
-                            <% if(currentUser.membership_status !== 'user' || msg.user_id === currentUser.id) { %>
+                            <% if(currentUser && (currentUser.membership_status !== 'user' || msg.user_id === currentUser.id)) { %>
                                 <p><%= msg.created_at.toDateString() %></p>
                             <% } %>
                         </div>
                         <p><%= msg.message_content %></p>
-                        <% if (currentUser.membership_status !== 'user' || msg.user_id === currentUser.id) { %>
+                        <% if (currentUser && (currentUser.membership_status !== 'user' || msg.user_id === currentUser.id)) { %>
                             <p>Author: <%= msg.firstname %></p>
                         <% } %>
                         <%# allow admins to be able to delete anyone's message%>
-                        <% if (currentUser.admin) { %>
+                        <% if (currentUser && currentUser.admin) { %>
                             <form action="/message/<%= msg.mid %>/delete" method="post">
                                 <button type="submit" onclick="confirm(`Are you sure you want to delete this message\nby user: <%= msg.firstname %>\nposted on: <%= msg.created_at.toDateString() %>`)">Delete</button>
                             </form>
@@ -44,45 +49,7 @@
                     </article>
                 <% }) %>
             <% } %>
-        <% } else { %>
-            <h1>Please Register to Continue!</h1>
-            <%- include('./partials/error.ejs') %>
-            <article>
-                <form action="register" method="post">
-                    <div class="name">
-                        <div>
-                            <label for="firstname">First Name: </label>
-                            <input type="text" name="firstname" id="firstname" required>
-                        </div>
-                        <div>
-                            <label for="lastname">Last Name: </label>
-                            <input type="text" name="lastname" id="lastname" required>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="username">Username: </label>
-                        <input type="email" name="username" id="username" placeholder="test@example.com" required>
-                    </div>
-                    <div>
-                        <label for="password">Password: </label>
-                        <input type="password" name="password" id="password" required>
-                    </div>
-                    <div>
-                        <label for="passwordConfirmation">Confirm Password: </label>
-                        <input type="password" name="passwordConfirmation" id="passwordConfirmation" required>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="admin" id="admin" value="true">
-                        <label for="admin">Admin</label>
-                    </div>
-
-                    <button type="submit">Register</button>
-                </form>
-                <p>Already have an account?</p>
-                <a href="/login">Login</a>
-            </article>
-        <% } %>
+        </section>
     </section>
 
 </main>

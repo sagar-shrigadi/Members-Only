@@ -1,3 +1,7 @@
 export const getMessageForm = (req, res) => {
-  res.render("messageForm");
+  if (req.isAuthenticated()) {
+    res.render("messageForm");
+  } else {
+    res.redirect("/login");
+  }
 };
