@@ -1,0 +1,27 @@
+<%- include('./partials/header.ejs') %>
+<main>
+    <section>
+        <div>
+            <h1>User: <%= currentUser.firstname %></h1>
+            <p>Membership Status: <%= currentUser.membership_status %></p>
+        </div>
+        <% if (locals.userMsg) { %>
+            <div>
+                <h2>All Messages By You</h2>
+                <a href="/message/new">Create New Message</a>
+            </div>
+            <% userMsg.map(msg => { %>
+                <article>
+                    <div>
+                        <h3><%= msg.title %></h3>
+                        <p><%= msg.created_at.toDateString() %></p>
+                    </div>
+                    <p><%= msg.message_content %></p>
+                </article>
+            <% }) %>
+        <% } %>
+        <h2>Check Out messages by other members</h2>
+        <a href="/">All Messages</a>
+    </section>
+</main>
+<%- include('./partials/footer.ejs') %>

@@ -27,6 +27,6 @@ export const postMessageForm = [
     const date = new Date();
     const userId = req.user.id;
     await insertMessage(messageTitle, messageContent, date, userId);
-    res.redirect("/");
+    res.redirect(`/user/${userId}`);
   },
 ];
