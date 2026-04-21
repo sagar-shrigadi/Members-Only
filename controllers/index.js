@@ -7,18 +7,24 @@ export const getIndex = (req, res) => {
 };
 
 // validation errors
-const emptyMsgErr = `must not be empty!`;
-const nameRegexErr = `can only contain letters, numbers, hyphens, apostrophes, and spaces.\n and must start and a letter!`;
+export const emptyMsgErr = `must not be empty!`;
+
+// Validates names allowing alphanumeric characters separated by single spaces, hyphens, or apostrophes.
+const nameRegex = /^[a-zA-Z](?:[\s-'][a-zA-Z0-9]+)*$/;
+const nameRegexErr = `must start with a letter and can only include letters, numbers, spaces, hyphens, or apostrophes.`;
 const nameLengthErr = `must have minimum length of 2`;
-const emailRegexErr = "must be in proper form like test@example.com";
+
+// Validates a standard email address format with a name, @ symbol, domain, and 2+ character TLD.
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const emailRegexErr = "a valid email address (e.g., name@example.com).";
 
 const loginFormValidation = [
   body("username")
     .trim()
     .notEmpty()
     .withMessage(`Username ${emptyMsgErr}`)
-    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
-    .withMessage(`Username ${emailRegexErr}`),
+    .matches(emailRegex)
+    .withMessage(`Username Should ${emailRegexErr}`),
 
   body("password")
     .isLength({ min: 5 })
@@ -38,7 +44,7 @@ const registerFormValidation = [
         ? `First Name ${emptyMsgErr}`
         : `Last Name ${emptyMsgErr}`,
     )
-    .matches(/^[a-zA-Z0-9]+(?:[\s-'][a-zA-Z0-9]+)*$/)
+    .matches(nameRegex)
     .withMessage((value, { path }) =>
       path === "firstname"
         ? `First Name ${nameRegexErr}`
@@ -54,8 +60,9 @@ const registerFormValidation = [
     .trim()
     .notEmpty()
     .withMessage(`Username ${emptyMsgErr}`)
-    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
-    .withMessage(`Username ${emailRegexErr}`)
+    // Validates a standard email address format with a name, @ symbol, domain, and 2+ character TLD.
+    .matches(emailRegex)
+    .withMessage(`Username Should ${emailRegexErr}`)
     .custom(async (value, { req }) => {
       const user = await getUserByUsername(req.body.username);
       console.log(
